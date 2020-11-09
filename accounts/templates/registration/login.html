@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <title>DNC Teacher Directory - Login</title>
+      <!-- Custom fonts for this template-->
+      <link href="{% static 'dnc_teacher_directory/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+      <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+      <!-- Custom styles for this template-->
+      <link href="{% static 'dnc_teacher_directory/css/sb-admin-2.css' %}" rel="stylesheet">
+   </head>
+   <body class="bg-gradient-primary" style="background-image: url('{% static 'dnc_teacher_directory/assets/media/base/school.jpg' %}');height: 100%;">
+      <div class="container">
+         <!-- Outer Row -->
+         <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+               <div class="card o-hidden border-0 shadow-lg my-5">
+                  <div class="card-body p-0">
+                     <!-- Nested Row within Card Body -->
+                     <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block">
+                           <img class="rounded mx-auto d-block" src="{% static 'dnc_teacher_directory/assets/media/base/dnc.jpg' %}"  width="450" height="400" alt="center">
+                        </div>
+                        <div class="col-lg-6">
+                           <div class="p-5">
+                              <div class="text-center">
+                                 <h1 class="h4 text-gray-900 mb-4">DNC Teacher Directory</h1>
+                              </div>
+                              {% if form.errors  %}
+                              <div class="alert alert-danger alert-dismissible" role="alert">
+                                 <div class="alert-text">{{ form.non_field_errors  }}</div>
+                                 <div class="alert-close">                
+                                    <i class="flaticon2-cross kt-icon-sm" data-dismiss="alert"></i>            
+                                 </div>
+                              </div>
+                              <!-- display the form errors if they exist -->
+                              {% endif %}
+                              <form class="form" method="post">
+                                 {% for field in form %}
+                                 <div class="form-group">
+                                    <input type="{{ field.html_name }}" class="form-control form-control-user" name="{{ field.html_name }}" required id="{{ field.id_for_label }}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="{{ field.html_name }}">
+                                 </div>
+                                 {% endfor %}
+                                 {% csrf_token %}
+                                 <button type="submit" value="Login" id="submit" name="Login" class="btn btn-primary btn-user btn-block mb-2">Sign In</button>
+                              </form>
+                              <a class="btn btn-danger btn-user btn-block" href="{% url 'accounts:password_reset' %}">Forgot Password?</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Bootstrap core JavaScript-->
+      <script src="{% static 'dnc_teacher_directory/vendor/jquery/jquery.min.js' %}"></script>
+      <script src="{% static 'dnc_teacher_directory/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+      <!-- Core plugin JavaScript-->
+      <script src="{% static 'dnc_teacher_directory/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="{% static 'dnc_teacher_directory/js/sb-admin-2.min.js' %}"></script>
+   </body>
+</html>

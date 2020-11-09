@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+
+{% load is_group %}
+
+
+{% block title %}
+
+Teacher Subject List
+
+{% endblock %}
+
+{% block subheader_title %}
+
+Teacher Directory - Teacher Subject List
+
+{% endblock subheader_title %}
+
+
+
+{% block content %}
+{% load mathfilters %}
+{% comment %} <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#exampleModal">
+Generate Report
+</button> {% endcomment %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Teacher Directory - Teacher Subject List</h6>
+    </div>
+    <div class="card-body">
+        <div>
+        
+        {% if success_message %}
+            <div class="col-4 alert alert-success mb-4" role="alert" style="text-align: center;">
+                {{ success_message }}
+            </div>
+            {% elif error_message %}
+            <div class="col-4 alert alert-danger mb-4" role="alert" style="text-align: center;">
+                {{ error_message }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="table-responsive">
+            <table class="display table table-bordered" id="">
+                <thead>
+                    <tr>
+                        <th>Teacher</th>
+                        <th>Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in object_list %}
+                        <tr>
+                            <td>{{ item.teacher }}</td>
+                            <td>{{ item.subject }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Teacher</th>
+                        <th>Subject</th>
+                    </tr>
+                </tfoot>
+            </table> 
+        </div>
+    </div>
+</div>
+
+{% comment %} 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" id="exampleModalLabel">797 - Service Level Detail Report</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        {% load crispy_forms_tags %}
+                    <form method="post">
+                        {% csrf_token %} {{ form|crispy }}
+
+                        
+                    
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" class='btn btn-primary' value="Submit">
+        </form>
+      </div>
+    </div>
+  </div>
+</div> {% endcomment %}
+
+
+{% endblock content %}
+
