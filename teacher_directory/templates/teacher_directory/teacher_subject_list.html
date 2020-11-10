@@ -24,9 +24,12 @@ Teacher Directory - Teacher Subject List
 <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#exampleModal">
 Generate Report
 </button> {% endcomment %}
+
+<div class="row justify-content-center">
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Teacher Directory - Teacher Subject List</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Teacher Directory - Teacher Subject List
+        </h6>
     </div>
     <div class="card-body">
         <div>
@@ -47,13 +50,17 @@ Generate Report
                     <tr>
                         <th>Teacher</th>
                         <th>Subject</th>
+                        <th>Teach</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in object_list %}
+                    {% for item in object_list.subjects %}
                         <tr>
                             <td>{{ item.teacher }}</td>
                             <td>{{ item.subject }}</td>
+                            <td align="center">
+							<button class="btn btn-success form-control" onClick="" data-toggle="modal" data-target="#Modal_{{ item.teacher.id }}">TEACH</button>
+						</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -61,32 +68,54 @@ Generate Report
                     <tr>
                         <th>Teacher</th>
                         <th>Subject</th>
+                        <th>Teach</th>
                     </tr>
                 </tfoot>
             </table> 
         </div>
     </div>
 </div>
+</div>
 
-{% comment %} 
+{% for item in object_list.teacher %} 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade"  id="Modal_{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-primary" id="exampleModalLabel">797 - Service Level Detail Report</h5>
+        <h5 class="modal-title text-primary" id="Modal_{{ item.id }}">Teacher Profile</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        
-        {% load crispy_forms_tags %}
-                    <form method="post">
-                        {% csrf_token %} {{ form|crispy }}
-
-                        
-                    
+        <table class="table-bordered" id="">
+            <thead>
+                <tr>
+                    <th>Teacher</th>
+                    <th>Subject</th>
+                    <th>Teach</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in object_list.subjects %}
+                    <tr>
+                        <td>{{ item.teacher }}</td>
+                        <td>{{ item.subject }}</td>
+                        <td align="center">
+                        <button class="btn btn-success form-control" onClick="" data-toggle="modal" data-target="#Modal_{{ item.teacher.id }}">TEACH</button>
+                    </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Teacher</th>
+                    <th>Subject</th>
+                    <th>Teach</th>
+                </tr>
+            </tfoot>
+        </table>             
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -95,7 +124,8 @@ Generate Report
       </div>
     </div>
   </div>
-</div> {% endcomment %}
+</div> 
+{% endfor %}
 
 
 {% endblock content %}

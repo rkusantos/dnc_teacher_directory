@@ -32,7 +32,12 @@ class TeacherSubjectListView(ListView):
 
     def get_queryset(self):
 
-        return Subjects.objects.all().order_by('teacher')
+        queryset = {
+            'subjects': Subjects.objects.all().order_by('teacher'),
+            'teacher': Teacher.objects.all(),
+        }
+
+        return queryset
         
 
     def get_context_data(self, **kwargs):

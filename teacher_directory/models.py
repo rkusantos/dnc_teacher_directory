@@ -10,7 +10,7 @@ class Teacher(models.Model):
     room_number = models.CharField(max_length=3)
 
     def __str__(self):
-        return self.first_name + " - " + self.email_address
+        return self.first_name + " " + self.last_name + "\n(" + self.email_address + ")"
 
 class Subjects(models.Model):
     subject = models.CharField(max_length=100)

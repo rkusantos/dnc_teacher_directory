@@ -31,13 +31,4 @@ class HomePage(LoginRequiredMixin, TemplateView):
 
 
     login_url = 'accounts/login/'
-
-    # def get(self, request):
-
-    #     files = os.listdir('D:/KN/knportal/media/HomePage/Carousel')
-    #     print(files)
-    #     args = {'files': files}
-
-    #     return render(request, self.template_name, args)
-
  
