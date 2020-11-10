@@ -77,45 +77,38 @@ Generate Report
 </div>
 </div>
 
-{% for item in object_list.teacher %} 
+{% for teacher_item in object_list.teacher %} 
 <!-- Modal -->
-<div class="modal fade"  id="Modal_{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade"  id="Modal_{{ teacher_item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-primary" id="Modal_{{ item.id }}">Teacher Profile</h5>
+      <div style="text-align: center;display: block;">
+        {% if teacher_item.profile_picture %}
+        <img class="avatar" src="{{ teacher_item.profile_picture.url }}" alt="Not Found">
+        {% else %}
+        <img class="avatar" src="/media/images/empty_profile.jpg" alt="Not Found">
+        {% endif %}
+        </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <table class="table-bordered" id="">
-            <thead>
-                <tr>
-                    <th>Teacher</th>
-                    <th>Subject</th>
-                    <th>Teach</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in object_list.subjects %}
-                    <tr>
-                        <td>{{ item.teacher }}</td>
-                        <td>{{ item.subject }}</td>
-                        <td align="center">
-                        <button class="btn btn-success form-control" onClick="" data-toggle="modal" data-target="#Modal_{{ item.teacher.id }}">TEACH</button>
-                    </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Teacher</th>
-                    <th>Subject</th>
-                    <th>Teach</th>
-                </tr>
-            </tfoot>
-        </table>             
+      
+        <p>
+        <b>First Name:</b> {{ teacher_item.first_name }}</br>
+        <b>Last Name:</b> {{ teacher_item.last_name }}</br>
+        <b>Email Address:</b> {{ teacher_item.email_address }}</br>
+        <b>Phone Number:</b> {{ teacher_item.phone_number }}</br>
+        <b>Room Number:</b>{{ teacher_item.room_number }}</br>
+        <b>Subjects:</b> {% for subject_item in object_list.subjects %}
+        {% if subject_item.teacher.id == teacher_item.id %}
+        {{ subject_item.subject }},
+        {% endif%}
+        {% endfor %}
+        </p>
+      
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

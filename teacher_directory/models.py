@@ -4,7 +4,7 @@ from django.urls import reverse
 class Teacher(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    profile_picture = models.ImageField(upload_to='images/') 
+    profile_picture = models.ImageField(upload_to='images/', null=True, blank=True) 
     email_address = models.EmailField(unique=True)
     phone_number = models.IntegerField()
     room_number = models.CharField(max_length=3)
