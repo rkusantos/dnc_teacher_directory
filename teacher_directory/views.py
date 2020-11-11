@@ -5,17 +5,16 @@ from django.views.generic import (View, TemplateView,
                                   ListView, DetailView,
                                   CreateView, DeleteView,
                                   UpdateView)
-from django.urls import resolve
-from django.db import connections
-import csv,io
-import xlsxwriter
+from django.utils import timezone
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 from .models import *
 from .forms import *
 
-
 import pandas as pd
 import openpyxl
+from zipfile import *
 
 
 
@@ -57,39 +56,66 @@ class ImportDataView(LoginRequiredMixin, TemplateView):
         
 
         if form.is_valid():
-            if request.FILES['teachers']:
-
-                df = pd.read_csv(request.FILES['teachers'])
-
-                #checking for more than 5 subjects
-                #possible stopping point though model will not allow more than 5 subjects per teacher in insert
-                for subs in df['Subjects taught'].dropna():
-                    if subs.split(",") > 5:
-                        self.error_message = 'ERROR: uploading more than 5 subjects'
-                        return render(request, self.template_name, {'form': form, 'error_message':self.error_message})
-                    else:
-                        for x in subs.split(",")
-                            Subjects.objects.create(
-                                
-                            )
+            try:
                 
+                if 'teachers' in request.FILES:
 
-                Teacher.objects.bulk_create([Teacher(first_name=row['First Name'],
-                                                                 last_name=row['Last Name'],
-                                                                 profile_picture=row['Profile picture'],
-                                                                 email_address=row['Email Address'],
-                                                                 phone_number=row['Phone Number'],
-                                                                 room_number=row['Room Number'],
-                                                                 
-                                                                 ) for index, row in dataframe.iterrows()])
+                    df = pd.read_csv(request.FILES['teachers'])
+                    df = df.dropna()
 
-                                    
-                
+                    # checking for more than 5 subjects
+                    # possible stopping point though model will not allow more than 5 subjects per teacher in insert
+                    for subs in df['Subjects taught']:
+                        if len(subs.split(",")) > 5:
+                            self.error_message = 'ERROR: uploading more than 5 subjects'
+                            return render(request, self.template_name, {'form': form, 'error_message':self.error_message})
+                        
+                    for index, row in df.iterrows():
+                        teacher = Teacher(first_name=row['First Name'],
+                                                                    last_name=row['Last Name'],
+                                                                    profile_picture=row['Profile picture'],
+                                                                    email_address=row['Email Address'],
+                                                                    phone_number=row['Phone Number'],
+                                                                    room_number=row['Room Number'],
+                                                                    )
+                        teacher.save()
 
+                        for subject in row['Subjects taught'].split(","):
+                        
+                            subjects_insert = Subjects(subject=subject, teacher=teacher)
+                            subjects_insert.save()
 
+                    
+
+                    # OPTIONAL BULK INSERT METHOD
+                    # Teacher.objects.bulk_create([Teacher(first_name=row['First Name'],
+                    #                                                 last_name=row['Last Name'],
+                    #                                                 profile_picture=row['Profile picture'],
+                    #                                                 email_address=row['Email Address'],
+                    #                                                 phone_number=row['Phone Number'],
+                    #                                                 room_number=row['Room Number'],
+                    #                                                 ) for index, row in dataframe.iterrows()])
+
+                if 'pictures' in request.FILES:
+
+                    with ZipFile(request.FILES['pictures']) as myzip:
+                        
+                        myzip.extractall(settings.MEDIA_ROOT + '/images')
+
+                if request.FILES == {}:
+                    
+                    return render(request, self.template_name, {'form': form})
+
+                self.success_message = 'FILE UPLOAD SUCCESSFUL!'
+
+                return render(request, self.template_name, {'form': form, 'success_message':self.success_message})
+
+            except Exception as e:
+                    self.error_message = e
+                    return render(request, self.template_name, {'form': form, 'error_message':self.error_message})
+
+        else:
+            return render(request, self.template_name, {'form': form})                  
 
             
-            if 'pictures' in request.FILES:
-                pass
         
-        return render(request, self.template_name, {'form': form, 'success_message':self.success_message})

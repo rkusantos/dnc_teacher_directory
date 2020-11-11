@@ -85,7 +85,7 @@ Generate Report
       <div class="modal-header">
       <div style="text-align: center;display: block;">
         {% if teacher_item.profile_picture %}
-        <img class="avatar" src="{{ teacher_item.profile_picture.url }}" alt="Not Found">
+        <img class="avatar" src="{{ teacher_item.profile_picture.url }}" onerror="this.src='/media/images/empty_profile.jpg';">
         {% else %}
         <img class="avatar" src="/media/images/empty_profile.jpg" alt="Not Found">
         {% endif %}
