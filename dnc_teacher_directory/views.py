@@ -10,7 +10,7 @@ import os
 register = template.Library()
 
 # print(query)
-class HomePage(LoginRequiredMixin, TemplateView):
+class HomePage(TemplateView):
     template_name = 'index.html'
 
     # def get(self, request, *args, **kwargs):

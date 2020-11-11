@@ -37,6 +37,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Functions:</h6>
             <a class="{% if 'teacher_subject_list' in request.path %}collapse-item active{% else %}collapse-item{% endif %}" href="{% url 'teacher_directory:teacher_subject_list' %}"><i class=""></i>Teacher Subject List</a>
+            <a class="{% if 'input' in request.path %}collapse-item active{% else %}collapse-item{% endif %}" href="{% url 'teacher_directory:input_data_view' %}"><i class=""></i>Input Data</a>
           </div>
         </div>
       </li>
